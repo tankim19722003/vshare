@@ -1,1 +1,0 @@
-CREATE INDEX idx_user_account ON users(account);

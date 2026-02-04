@@ -5,6 +5,9 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL
 );
 
+CREATE INDEX idx_user_account ON users(account);
+
+
 CREATE TABLE voice_posts(
     id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
     title TEXT NOT NULL,
