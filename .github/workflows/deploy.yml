@@ -45,3 +45,9 @@ jobs:
             export DB_USER=${{ secrets.DB_USER }}
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             nohup java -jar ~/app/*.jar > app.log 2>&1 &
+            
+            sleep 3
+            echo "Checking if app.log exists..."
+            ls -l app.log
+            echo "First 10 lines of app.log:"
+            head -n 10 app.log
