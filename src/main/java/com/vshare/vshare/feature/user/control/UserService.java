@@ -5,6 +5,7 @@ import com.vshare.vshare.feature.user.boundary.dto.response.UserLoginResponse;
 import com.vshare.vshare.feature.user.entity.User;
 import com.vshare.vshare.feature.user.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService implements IUserService{
 
     private final UserRepo userRepo;
@@ -51,8 +53,10 @@ public class UserService implements IUserService{
 
     private Map<String, Object> validateUser(String account, String password) {
         User user = userRepo.findByAccount(account);
-        if (user == null || !encoder.matches(password, user.getPassword()))
+        if (user == null || !encoder.matches(password, user.getPassword())) {
+            log.info("Tài khoản hoặc mật khẩu không đúng: {}, {}", account, password);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tài khoản hoặc mật khẩu không đúng");
+        }
 
         Map<String, Object> result = new HashMap<>();
         result.put("user", user);
