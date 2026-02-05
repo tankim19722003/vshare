@@ -9,4 +9,6 @@ public interface IUserService {
     void create(User user);
 
     ApiResponse<UserLoginResponse> login(String account, String password);
+
+    User getUserFromSecurityContext();
 }

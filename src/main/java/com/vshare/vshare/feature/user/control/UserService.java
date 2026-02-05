@@ -3,6 +3,7 @@ package com.vshare.vshare.feature.user.control;
 import com.vshare.vshare.common.response.ApiResponse;
 import com.vshare.vshare.feature.user.boundary.dto.response.UserLoginResponse;
 import com.vshare.vshare.feature.user.entity.User;
+import com.vshare.vshare.feature.user.entity.UserPrincipal;
 import com.vshare.vshare.feature.user.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
@@ -91,5 +93,16 @@ public class UserService implements IUserService{
 
         return apiResponse;
 
+    }
+
+    @Override
+    public User getUserFromSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserPrincipal principal) {
+            return principal.getUser();
+        }
+
+        return null;
     }
 }

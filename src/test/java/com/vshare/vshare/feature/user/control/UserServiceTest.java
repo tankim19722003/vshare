@@ -1,9 +1,7 @@
-package com.vshare.vshare.feature.user.service;
+package com.vshare.vshare.feature.user.control;
 
 import com.vshare.vshare.common.response.ApiResponse;
 import com.vshare.vshare.feature.user.boundary.dto.response.UserLoginResponse;
-import com.vshare.vshare.feature.user.control.JwtService;
-import com.vshare.vshare.feature.user.control.UserService;
 import com.vshare.vshare.feature.user.entity.User;
 import com.vshare.vshare.feature.user.repo.UserRepo;
 import org.junit.jupiter.api.BeforeEach;
