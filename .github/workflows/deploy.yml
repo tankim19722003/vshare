@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -14,11 +14,27 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin' # You can also use 'zulu' or 'corretto'
+          distribution: 'temurin'
           cache: 'maven'
 
-      - name: Build with Maven
-        run: mvn clean package -DskipTests
+      - name: Build and Test with Maven
+        run: mvn clean package
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vshare-app
+          path: target/*.jar
+
+  deploy:
+    needs: build_and_test # This job depends on the 'build_and_test' job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vshare-app
+          path: ./app-artifact
 
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -26,7 +42,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "target/*.jar"
+          source: "./app-artifact/*.jar"
           target: "~/app"
           strip_components: 1
 
@@ -51,8 +67,6 @@ jobs:
             
             export AWS_S3_REGION=${{ secrets.AWS_S3_REGION }}
             export AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}
-            
-            export AWS_REGION=ap-southeast-1  
             
             nohup java -jar ~/app/*.jar > app.log 2>&1 &
             
