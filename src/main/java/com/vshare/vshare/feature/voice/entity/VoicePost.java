@@ -1,6 +1,7 @@
 package com.vshare.vshare.feature.voice.entity;
 
 import com.vshare.vshare.feature.user.entity.User;
+import com.vshare.vshare.feature.voice.boundary.dto.response.VoiceResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,4 +44,5 @@ public class VoicePost {
         this.totalLike = 0;
         createdAt = LocalDateTime.now();
     }
+
 }
