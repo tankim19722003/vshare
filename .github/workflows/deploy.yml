@@ -53,22 +53,24 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            cd ~/app
+            
             # Kill the old process if it exists
             fuser -k 8080/tcp || true
+            
             # Run the new JAR in the background with DB secrets
             export DB_HOST=${{ secrets.DB_HOST }}
             export DB_NAME=${{ secrets.DB_NAME }}
             export DB_USER=${{ secrets.DB_USER }}
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             
-            # --- BỔ SUNG BIẾN AWS S3 TẠI ĐÂY ---
             export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
             export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
             
             export AWS_S3_REGION=${{ secrets.AWS_S3_REGION }}
             export AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}
             
-            nohup java -jar ~/app/*.jar > app.log 2>&1 &
+            nohup java -Dspring.profiles.active=prod -jar *.jar > app.log 2>&1 &
             
             sleep 3
             echo "Checking if app.log exists..."

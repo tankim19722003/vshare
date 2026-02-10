@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -28,6 +30,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        if (byPassEndpointHandler(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String token = null;
         String username = null;
@@ -58,6 +65,20 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    public boolean byPassEndpointHandler(HttpServletRequest request) throws ServletException, IOException {
+        List<String> endpoints = new ArrayList<>();
+        endpoints.add("/users/login");
+        endpoints.add("/users/register");
+
+        String url = request.getRequestURI();
+
+        for(String endpoint : endpoints) {
+            if (url.contains(endpoint)) return true;
+        }
+        return false;
+
     }
 
 }

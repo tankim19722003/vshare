@@ -29,7 +29,7 @@ public class VoicePostController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('USER')")
     public ApiResponse<VoicePageResponse> getUserVoicePostsByPage(
             @RequestParam(name = "page", defaultValue = "0") int page ,
             @RequestParam(name = "size", defaultValue = "10") int size
