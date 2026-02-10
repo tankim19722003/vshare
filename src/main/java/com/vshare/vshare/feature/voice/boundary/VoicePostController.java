@@ -19,7 +19,7 @@ public class VoicePostController {
     private final VoicePostService voicePostService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('USER')")
     public ApiResponse<Void> create(@Valid @ModelAttribute  VoicePostDto voicePostDto) {
         voicePostService.create(voicePostDto);
         return ApiResponse.<Void>builder()

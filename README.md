@@ -22,7 +22,7 @@ The project is built with Java & Spring Boot and deployed on AWS EC2 with an aut
 
 ## 🚀 Tech Stack
 
-- **Backend:** Java 21, Spring Boot 3.x
+- **Backend:** Java 21, Spring Boot 4.0.2
 - **Security:** Spring Security, JSON Web Tokens (JWT)
 - **Database:** Spring Data JPA, Hibernate
 - **File Storage:** AWS S3
@@ -37,7 +37,7 @@ The project is built with Java & Spring Boot and deployed on AWS EC2 with an aut
 
 - JDK 21
 - Maven 3.x
-- A database instance (e.g., MySQL, PostgreSQL)
+- A database instance (MySQL)
 - An AWS account with an S3 bucket and access credentials (Access Key & Secret Key)
 
 ### Setup Steps
@@ -132,6 +132,8 @@ Below are some of the main application endpoints.
 
 **Voice Post**
 - `POST /voice-post`: Create a new voice message (requires authentication).
+- `GET /voice-post?page=...&size=...`: Create a new voice message (requires authentication).
+
 
 **Group**
 - `POST /groups`: Create a new group (requires authentication).
